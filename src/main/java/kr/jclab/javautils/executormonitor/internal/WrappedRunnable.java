@@ -1,25 +1,28 @@
 package kr.jclab.javautils.executormonitor.internal;
 
-import kr.jclab.javautils.executormonitor.ExecutorMonitorHandler;
+import kr.jclab.javautils.executormonitor.ExecutorMonitor;
+
+import java.util.UUID;
 
 public class WrappedRunnable extends WrappedTaskBase implements Runnable {
-    private final ExecutorMonitorHandler monitorHandler;
+    private final ExecutorMonitor monitor;
     private final Runnable command;
 
-    public WrappedRunnable(ExecutorMonitorHandler monitorHandler, Runnable command) {
-        this.monitorHandler = monitorHandler;
+    public WrappedRunnable(ExecutorMonitor monitor, Runnable command) {
+        this.monitor = monitor;
         this.command = command;
     }
 
     @Override
     public void run() {
+        UUID callId = monitor.onTaskStart(this);
         startedAt.set(System.nanoTime());
-        monitorHandler.onTaskStart(this);
+
         try {
             command.run();
-            monitorHandler.onTaskEnd(this, null);
+            monitor.onTaskEnd(this, callId, null);
         } catch (Throwable e) {
-            monitorHandler.onTaskEnd(this, e);
+            monitor.onTaskEnd(this, callId, e);
             throw e;
         } finally {
             finishedAt.set(System.nanoTime());

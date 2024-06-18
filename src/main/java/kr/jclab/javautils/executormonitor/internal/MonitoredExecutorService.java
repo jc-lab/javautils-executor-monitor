@@ -1,6 +1,6 @@
 package kr.jclab.javautils.executormonitor.internal;
 
-import kr.jclab.javautils.executormonitor.ExecutorMonitorHandler;
+import kr.jclab.javautils.executormonitor.ExecutorMonitor;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 public class MonitoredExecutorService implements ExecutorService {
     protected final ExecutorService delegate;
-    protected final ExecutorMonitorHandler handler;
+    protected final ExecutorMonitor monitor;
 
-    public MonitoredExecutorService(ExecutorService delegate, ExecutorMonitorHandler handler) {
+    public MonitoredExecutorService(ExecutorService delegate, ExecutorMonitor monitor) {
         this.delegate = delegate;
-        this.handler = handler;
+        this.monitor = monitor;
     }
 
     @Override
@@ -91,11 +91,11 @@ public class MonitoredExecutorService implements ExecutorService {
     }
 
     protected Runnable wrap(Runnable task) {
-        return new WrappedRunnable(handler, task);
+        return new WrappedRunnable(monitor, task);
     }
 
     protected <T> Callable<T> wrap(Callable<T> task) {
-        return new WrappedCallable<>(handler, task);
+        return new WrappedCallable<>(monitor, task);
     }
 
     protected <T> Collection<? extends Callable<T>> wrapAll(Collection<? extends Callable<T>> tasks) {

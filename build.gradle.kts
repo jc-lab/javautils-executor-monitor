@@ -28,6 +28,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     implementation("com.google.code.findbugs:jsr305:3.0.2")
+
+    // https://mvnrepository.com/artifact/com.fasterxml.uuid/java-uuid-generator
+    implementation("com.fasterxml.uuid:java-uuid-generator:5.1.0")
 }
 
 tasks.test {

@@ -1,6 +1,6 @@
 package kr.jclab.javautils.executormonitor.internal;
 
-import kr.jclab.javautils.executormonitor.ExecutorMonitorHandler;
+import kr.jclab.javautils.executormonitor.ExecutorMonitor;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.*;
@@ -8,8 +8,8 @@ import java.util.concurrent.*;
 public class MonitoredScheduledExecutorService extends MonitoredExecutorService implements ScheduledExecutorService {
     private final ScheduledExecutorService delegate;
 
-    public MonitoredScheduledExecutorService(@Nonnull ScheduledExecutorService delegate, @Nonnull ExecutorMonitorHandler handler) {
-        super(delegate, handler);
+    public MonitoredScheduledExecutorService(@Nonnull ScheduledExecutorService delegate, @Nonnull ExecutorMonitor monitor) {
+        super(delegate, monitor);
         this.delegate = delegate;
     }
 
@@ -28,12 +28,12 @@ public class MonitoredScheduledExecutorService extends MonitoredExecutorService 
     @Override
     @Nonnull
     public ScheduledFuture<?> scheduleAtFixedRate(@Nonnull Runnable command, long initialDelay, long period, @Nonnull TimeUnit unit) {
-        return delegate.scheduleAtFixedRate(command, initialDelay, period, unit);
+        return delegate.scheduleAtFixedRate(wrap(command), initialDelay, period, unit);
     }
 
     @Override
     @Nonnull
     public ScheduledFuture<?> scheduleWithFixedDelay(@Nonnull Runnable command, long initialDelay, long delay, @Nonnull TimeUnit unit) {
-        return delegate.scheduleWithFixedDelay(command, initialDelay, delay, unit);
+        return delegate.scheduleWithFixedDelay(wrap(command), initialDelay, delay, unit);
     }
 }

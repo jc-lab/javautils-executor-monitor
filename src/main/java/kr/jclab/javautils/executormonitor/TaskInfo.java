@@ -1,10 +1,13 @@
 package kr.jclab.javautils.executormonitor;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public interface TaskInfo {
-    @Nonnull String getId();
-    @Nonnull RuntimeException getStack();
+    @Nonnull
+    UUID getId();
+    @Nonnull
+    RuntimeException getStack();
 
     /**
      * @return nano

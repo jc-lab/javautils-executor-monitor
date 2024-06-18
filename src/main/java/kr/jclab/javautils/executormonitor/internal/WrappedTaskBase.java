@@ -7,14 +7,14 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class WrappedTaskBase implements TaskInfo {
-    protected final String taskId = UUID.randomUUID().toString();
+    protected final UUID taskId = UUID.randomUUID();
     protected final RuntimeException stack = new RuntimeException("STACK");
     protected final AtomicLong startedAt = new AtomicLong(-1);
     protected final AtomicLong finishedAt = new AtomicLong(-1);
 
     @Override
     @Nonnull
-    public String getId() {
+    public UUID getId() {
         return taskId;
     }
 
